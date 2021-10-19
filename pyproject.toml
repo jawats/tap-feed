@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "tap-feed"
+version = "1.0.0"
+description = "`tap-feed` is a Singer tap for various feeds (RSS, Atom, CDF, iTunes, and Dublin Core), built with the Meltano SDK for Singer Taps."
+authors = ["Jon Watson"]
+keywords = [
+    "ELT",
+    "feed",
+    "RSS",
+    "Atom",
+    "CDF",
+    "iTunes",
+    "Dublin",
+]
+license = "Apache 2.0"
+
+[tool.poetry.dependencies]
+python = "<3.10,>=3.6.2"
+requests = "^2.25.1"
+singer-sdk = "^0.3.11"
+feedparser = "^6.0.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+tox = "^3.24.4"
+flake8 = "^3.9.2"
+black = "^21.9b0"
+pydocstyle = "^6.1.1"
+mypy = "^0.910"
+types-requests = "^2.25.8"
+types-python-dateutil = "^2.8.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+# CLI declaration
+tap-feed = 'tap_feed.tap:TapFeed.cli'
