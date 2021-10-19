@@ -31,7 +31,7 @@ class TapFeed(Tap):
             th.ArrayType(th.StringType),
             required=True,
             default=["title"],
-            description="A list of field level data fields to capture.",
+            description="A list of feed level data fields to capture.",
         ),
         th.Property(
             "feed_entry_fields",
