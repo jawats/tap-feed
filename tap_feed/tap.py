@@ -29,18 +29,21 @@ class TapFeed(Tap):
         th.Property(
             "feed_fields",
             th.ArrayType(th.StringType),
+            required=True,
             default=["title"],
             description="A list of field level data fields to capture.",
         ),
         th.Property(
             "feed_entry_fields",
             th.ArrayType(th.StringType),
+            required=True,
             default=["id", "title", "link"],
             description="A list of entry level data fields to capture.",
         ),
         th.Property(
             "feed_entry_replication_key",
             th.StringType,
+            required=True,
             default="published",
             description="The field used to determine new records, typically 'published' or 'updated'.",
         ),
