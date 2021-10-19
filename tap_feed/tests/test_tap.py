@@ -20,6 +20,7 @@ class TestConfigJsonSchema:
             "feed_urls",
             "feed_fields",
             "feed_entry_fields",
+            "feed_entry_replication_key",
             "start_date",
         ]
         assert (
@@ -37,8 +38,8 @@ class TestConfigJsonSchema:
     @pytest.mark.parametrize(
         "property_name,expected_default",
         [
-            ("feed_fields", ["title", "subtitle"]),
-            ("feed_entry_fields", ["id", "title", "summary", "link"]),
+            ("feed_fields", ["title"]),
+            ("feed_entry_fields", ["id", "title", "link"]),
         ],
     )
     def test_default_values(self, property_name, expected_default):

@@ -82,6 +82,26 @@ from tap_feed.tap import TapFeed
                 "entry_description",
             ],
         ),
+        (
+            {
+                "feed_urls": [
+                    "http://feeds.feedburner.com/PythonSoftwareFoundationNews"
+                ],
+                "feed_fields": ["language", "title"],
+                "feed_entry_fields": ["title", "episode", "description"],
+                "feed_entry_replication_key": "updated",
+            },
+            [
+                "feed_url",
+                "feed_language",
+                "feed_title",
+                "entry_id",
+                "entry_updated",
+                "entry_title",
+                "entry_episode",
+                "entry_description",
+            ],
+        ),
     ],
 )
 def test_schema_generated(configuration, expected_schema_keys):

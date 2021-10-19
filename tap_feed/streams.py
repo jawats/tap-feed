@@ -16,7 +16,7 @@ class FeedStream(RESTStream):
     name = "feed"
     path = ""
     primary_keys = ["entry_id"]
-    replication_key = "entry_published"
+    replication_key = ""
 
     @property
     def schema(self) -> dict:
@@ -33,14 +33,14 @@ class FeedStream(RESTStream):
         feed_properties.extend(
             [
                 th.Property("entry_id", th.StringType),
-                th.Property("entry_published", th.DateTimeType),
+                th.Property(FeedStream.replication_key, th.DateTimeType),
             ]
         )
         feed_properties.extend(
             [
                 th.Property(f"entry_{name}", th.StringType)
                 for name in self.config["feed_entry_fields"]
-                if name not in ["id", "published"]
+                if name not in ["id", "published", "updated"]
             ]
         )
         return th.PropertiesList(*feed_properties).to_dict()
@@ -58,13 +58,14 @@ class FeedStream(RESTStream):
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         feed = feedparser.parse(response.text)
+        rep_key = FeedStream.replication_key[6:]
         entries = sorted(
-            feed["entries"], key=lambda d: datetime_parser.parse(d["published"])
+            feed["entries"], key=lambda d: datetime_parser.parse(d[rep_key])
         )
         feed_url = response.url
         bookmark_timestamp = self.get_starting_timestamp({"feed_url": feed_url})
         for entry in entries:
-            published_str = entry.get("published")
+            published_str = entry.get(rep_key)
             if published_str is None:
                 continue
             published_date = datetime_parser.parse(published_str)
@@ -77,13 +78,16 @@ class FeedStream(RESTStream):
                     }
                 )
                 record.update(
-                    {"entry_id": entry["id"], "entry_published": str(published_date)}
+                    {
+                        "entry_id": entry["id"],
+                        FeedStream.replication_key: str(published_date),
+                    }
                 )
                 record.update(
                     {
                         f"entry_{name}": entry[name]
                         for name in self.config["feed_entry_fields"]
-                        if name not in ["id", "published"]
+                        if name not in ["id", "published", "updated"]
                     }
                 )
                 yield record
