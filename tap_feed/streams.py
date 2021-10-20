@@ -73,7 +73,7 @@ class FeedStream(RESTStream):
                 record = {"feed_url": feed_url}
                 record.update(
                     {
-                        f"feed_{name}": feed["feed"][name]
+                        f"feed_{name}": feed["feed"].get(name)
                         for name in self.config["feed_fields"]
                     }
                 )
@@ -85,7 +85,7 @@ class FeedStream(RESTStream):
                 )
                 record.update(
                     {
-                        f"entry_{name}": entry[name]
+                        f"entry_{name}": entry.get(name)
                         for name in self.config["feed_entry_fields"]
                         if name not in ["id", "published", "updated"]
                     }
