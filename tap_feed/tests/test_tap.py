@@ -1,6 +1,7 @@
 """Tests tap configuration that is used in other parts of the code base"""
 
 import pytest
+from singer_sdk.exceptions import ConfigValidationError
 from singer_sdk.tap_base import Tap
 
 from tap_feed.tap import TapFeed
@@ -29,11 +30,8 @@ class TestConfigJsonSchema:
 
     def test_required_field_feed_urls(self):
         """Verifies an exception is thrown if the feed_urls property is not provided"""
-        with pytest.raises(RuntimeError) as excinfo:
-            test_tap: Tap = TapFeed()
-            print(test_tap.config_jsonschema)
-
-        assert "'feed_urls' is a required property" in str(excinfo.value)
+        with pytest.raises(ConfigValidationError):
+            TapFeed()
 
     @pytest.mark.parametrize(
         "property_name,expected_default",
