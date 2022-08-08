@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-feed"
-version = "1.1.0"
+version = "1.1.1"
 description = "A Singer tap for RSS and Atom feeds built with the Meltano SDK for Singer Taps."
 authors = ["Jon Watson"]
 keywords = [
